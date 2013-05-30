@@ -4,20 +4,24 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class WatchDog extends AbstractThread {
+public class WatchDog extends Thread {
     private int LOOP_MAX = 20;
+    protected Map<String, int> hazelcast;
+    protected ConcurrentHashMap<String, int> elastic;
+    protected BlockingQueue<Boolean> queue;
 
-    public WatchDog(Map<String, IntObj> hazelcast,
-                    ConcurrentHashMap<String, IntObj> elastic,
-                    BlockingQueue<Boolean> queue) {
-        super(hazelcast, elastic, queue);
+    public WatchDog(Map<String, int> hazelcast, ConcurrentHashMap<String, int> elastic,
+                          BlockingQueue<Boolean> queue) {
+        this.elastic = elastic;
+        this.hazelcast = hazelcast;
+        this.queue = queue;
     }
 
     private boolean checkEquals() {
-        IntObj el = elastic.get(Const.TO_BRAKE);
-        IntObj hz = hazelcast.get(Const.TO_BRAKE);
+        int el = elastic.get(Const.TO_BRAKE);
+        int hz = hazelcast.get(Const.TO_BRAKE);
         boolean tmp = el.equals(hz);
-        if (el.compareTo(hz) != 0)
+        if (el == hz)
             System.out.println(el + " != " + hz + " " + el.compareTo(hz));
         else
             System.out.println(el + " == " + hz + " " + el.compareTo(hz));

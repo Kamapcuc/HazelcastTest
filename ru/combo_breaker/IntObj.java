@@ -8,6 +8,11 @@ public class IntObj implements Serializable, Comparable {
     private int i;
 
     @Override
+    public int hashCode() {
+        return i;
+    }
+
+    @Override
     public int compareTo(Object o) {
         return ((IntObj)o).getI() - this.getI();
     }
