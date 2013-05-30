@@ -17,7 +17,8 @@ public class WatchDog extends AbstractThread {
         IntObj el = elastic.get(Const.TO_BRAKE);
         IntObj hz = hazelcast.get(Const.TO_BRAKE);
         boolean tmp = el.equals(hz);
-        System.out.println("" + el.compareTo(hz) + " " + el + " != " + hz);
+        if (!tmp)
+            System.out.println(el + " != " + hz);
         return tmp;
     }
 
