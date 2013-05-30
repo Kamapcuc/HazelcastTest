@@ -25,10 +25,10 @@ public class BreakerThread extends Thread {
                 queue.take();
             } catch (InterruptedException ignored) { }
             Integer tmp = Const.version.incrementAndGet();
-            elastic.put(Const.TO_BRAKE, tmp);
-            hazelcast.put(Const.TO_BRAKE, tmp);
+            elastic.put(Const.key, tmp);
+            hazelcast.put(Const.key, tmp);
 //            uncomment to fix
-//            hazelcast.get(Const.TO_BRAKE);
+//            hazelcast.get(Const.key);
         }
     }
 }

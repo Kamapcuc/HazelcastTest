@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Const {
-    public static final String TO_BRAKE = "Sherlock Holmes";
+    public static final String key = "Some key";
     public static AtomicInteger version =  new AtomicInteger(1);
     public static HazelcastInstance instance = getHazelcastInstance();
 
@@ -18,7 +18,7 @@ public class Const {
         Config x = null;
         try {
             x = new XmlConfigBuilder(filename).build();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
         }
         return Hazelcast.newHazelcastInstance(x);
     }

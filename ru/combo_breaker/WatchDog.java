@@ -6,11 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class WatchDog extends Thread {
     private int LOOP_MAX = 20;
-    protected Map<String, int> hazelcast;
-    protected ConcurrentHashMap<String, int> elastic;
+    protected Map<String, Integer> hazelcast;
+    protected ConcurrentHashMap<String, Integer> elastic;
     protected BlockingQueue<Boolean> queue;
 
-    public WatchDog(Map<String, int> hazelcast, ConcurrentHashMap<String, int> elastic,
+    public WatchDog(Map<String, Integer> hazelcast, ConcurrentHashMap<String, Integer> elastic,
                           BlockingQueue<Boolean> queue) {
         this.elastic = elastic;
         this.hazelcast = hazelcast;
@@ -18,12 +18,13 @@ public class WatchDog extends Thread {
     }
 
     private boolean checkEquals() {
-        int el = elastic.get(Const.TO_BRAKE);
-        int hz = hazelcast.get(Const.TO_BRAKE);
-        boolean tmp = el.equals(hz);
-        if (el == hz)
-            System.out.println(el + " != " + hz + " " + el.compareTo(hz));
-        else
+        int el = elastic.get(Const.key);
+        int hz = hazelcast.get(Const.key);
+        boolean tmp = el == hz;
+        if (!tmp)
+            System.out.println(el + " != " + hz + " " + (el - hz));
+//        else
+//            System.out.println(el + " == " + hz + " " + (el - hz));
         return tmp;
     }
 
@@ -31,14 +32,11 @@ public class WatchDog extends Thread {
     public void run() {
         super.run();
         while (true) {
-            while (queue.peek() != null) {
-
-            }
             boolean tmp = checkEquals();
             int cnt = 0;
             while (!tmp && (cnt++ < LOOP_MAX)) {
                 try {
-                    Thread.sleep((long) (Math.random() * 100));
+                    Thread.sleep(100);
                 } catch (InterruptedException ignored) {
                 }
                 tmp = checkEquals();
