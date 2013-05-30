@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main {
 
-
     public static void main(String[] args) throws IOException {
         AtomicBoolean tmp = new AtomicBoolean(false);
 
