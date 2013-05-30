@@ -5,12 +5,16 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class BreakerThread extends AbstractThread {
+public class BreakerThread extends Thread {
+    protected Map<String, Integer> hazelcast;
+    protected ConcurrentHashMap<String, Integer> elastic;
+    protected BlockingQueue<Boolean> queue;
 
-
-    public BreakerThread(Map<String, IntObj> hazelcast,
-                         ConcurrentHashMap<String, IntObj> elastic, BlockingQueue<Boolean> queue) {
-        super(hazelcast, elastic, queue);
+    public BreakerThread(Map<String, Integer> hazelcast, ConcurrentHashMap<String, Integer> elastic,
+                          BlockingQueue<Boolean> queue) {
+        this.elastic = elastic;
+        this.hazelcast = hazelcast;
+        this.queue = queue;
     }
 
     @Override
@@ -20,10 +24,10 @@ public class BreakerThread extends AbstractThread {
             try {
                 queue.take();
             } catch (InterruptedException ignored) { }
-            IntObj tmp = new IntObj(Const.version.incrementAndGet());
+            Integer tmp = Const.version.incrementAndGet();
             elastic.put(Const.TO_BRAKE, tmp);
             hazelcast.put(Const.TO_BRAKE, tmp);
-//            elastic.get(Const.TO_BRAKE);
+//            uncomment to fix
 //            hazelcast.get(Const.TO_BRAKE);
         }
     }

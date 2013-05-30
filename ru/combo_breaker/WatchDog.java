@@ -24,7 +24,6 @@ public class WatchDog extends Thread {
         if (el == hz)
             System.out.println(el + " != " + hz + " " + el.compareTo(hz));
         else
-            System.out.println(el + " == " + hz + " " + el.compareTo(hz));
         return tmp;
     }
 

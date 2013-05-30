@@ -9,7 +9,7 @@
             <multicast enabled="false">
             </multicast>
             <tcp-ip enabled="true">
-                <members></members>
+                <members>127.0.0.1</members>
             </tcp-ip>
         </join>
     </network>
