@@ -34,7 +34,7 @@ public class WatchDog extends Thread {
             int cnt = 0;
             while (!tmp && (cnt++ < LOOP_MAX)) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(2);
                 } catch (InterruptedException ignored) {
                 }
                 tmp = checkEquals();
