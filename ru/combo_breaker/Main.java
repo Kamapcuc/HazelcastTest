@@ -18,8 +18,9 @@ public class Main {
         hazel.put(Const.key, 1);
         elastic.put(Const.key, 1);
 
-        new BreakerThread(hazel, elastic, q).start();
-        new WatchDog(hazel, elastic, q).start();
+        BreakerThread tmp = new BreakerThread(hazel, elastic);
+        new WatchDog(hazel, elastic, tmp).start();
+        tmp.start();
  //       new BreakerThread(hazel, elastic, q).start();
 //        new BreakerThread(hazel, elastic).start();
     }

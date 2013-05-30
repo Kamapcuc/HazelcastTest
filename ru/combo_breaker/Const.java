@@ -12,6 +12,7 @@ public class Const {
     public static final String key = "Some key";
     public static AtomicInteger version =  new AtomicInteger(1);
     public static HazelcastInstance instance = getHazelcastInstance();
+    public static final Object mutex = new Object();
 
     private static HazelcastInstance getHazelcastInstance(){
         String filename = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "ru/combo_breaker/hazelcast.xml";

@@ -1,20 +1,19 @@
 package ru.combo_breaker;
 
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WatchDog extends Thread {
     private int LOOP_MAX = 20;
     protected Map<String, Integer> hazelcast;
     protected ConcurrentHashMap<String, Integer> elastic;
-    protected BlockingQueue<Boolean> queue;
+    protected BreakerThread breaker;
 
     public WatchDog(Map<String, Integer> hazelcast, ConcurrentHashMap<String, Integer> elastic,
-                          BlockingQueue<Boolean> queue) {
+                    BreakerThread breaker) {
         this.elastic = elastic;
         this.hazelcast = hazelcast;
-        this.queue = queue;
+        this.breaker = breaker;
     }
 
     private boolean checkEquals() {
@@ -30,7 +29,6 @@ public class WatchDog extends Thread {
 
     @Override
     public void run() {
-        super.run();
         while (true) {
             boolean tmp = checkEquals();
             int cnt = 0;
@@ -43,11 +41,10 @@ public class WatchDog extends Thread {
             }
             if (!tmp)
                 System.exit(100);
-            if (queue.peek() == null)
-                try {
-                    queue.put(true);
-                } catch (InterruptedException ignored) {
-                }
+            synchronized (breaker) {
+            if (breaker.getState() == Thread.State.WAITING)
+                breaker.notify();
+            }
         }
     }
 }
