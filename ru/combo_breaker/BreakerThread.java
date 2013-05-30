@@ -23,6 +23,8 @@ public class BreakerThread extends AbstractThread {
             IntObj tmp = new IntObj(Const.version.incrementAndGet());
             elastic.put(Const.TO_BRAKE, tmp);
             hazelcast.put(Const.TO_BRAKE, tmp);
+//            elastic.get(Const.TO_BRAKE);
+//            hazelcast.get(Const.TO_BRAKE);
         }
     }
 }
