@@ -25,8 +25,10 @@ public class BreakerThread extends Thread {
                 queue.take();
             } catch (InterruptedException ignored) { }
             Integer tmp = Const.version.incrementAndGet();
+            System.out.println("Started update to " + tmp);
             elastic.put(Const.key, tmp);
             hazelcast.put(Const.key, tmp);
+            System.out.println("Finished update to " + tmp);
 //            uncomment to fix
 //            hazelcast.get(Const.key);
         }
