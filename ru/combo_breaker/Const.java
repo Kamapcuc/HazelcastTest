@@ -15,11 +15,11 @@ public class Const {
 
     private static HazelcastInstance getHazelcastInstance(){
         String filename = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "ru/combo_breaker/hazelcast.xml";
-        Config x = null;
+        Config conf = null;
         try {
-            x = new XmlConfigBuilder(filename).build();
+            conf = new XmlConfigBuilder(filename).build();
         } catch (FileNotFoundException ignored) {
         }
-        return Hazelcast.newHazelcastInstance(x);
+        return Hazelcast.newHazelcastInstance(conf);
     }
 }

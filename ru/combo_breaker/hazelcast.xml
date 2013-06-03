@@ -6,8 +6,7 @@
     <network>
         <port auto-increment="false">5707</port>
         <join>
-            <multicast enabled="false">
-            </multicast>
+            <multicast enabled="false"/>
             <tcp-ip enabled="true">
                 <members>127.0.0.1</members>
             </tcp-ip>
@@ -15,5 +14,8 @@
     </network>
     <map name="repo">
        <cache-value>true</cache-value>
+<!--
+       <cache-value>false</cache-value>
+       -->
     </map>
 </hazelcast>

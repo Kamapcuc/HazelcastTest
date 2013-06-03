@@ -2,52 +2,43 @@ package ru.combo_breaker;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class WatchDog extends Thread {
-    private int LOOP_MAX = 20;
+    private int LOOP_MAX = 5;
     protected Map<String, Integer> hazelcast;
-    protected ConcurrentHashMap<String, Integer> elastic;
     protected BlockingQueue<Boolean> queue;
 
-    public WatchDog(Map<String, Integer> hazelcast, ConcurrentHashMap<String, Integer> elastic,
-                          BlockingQueue<Boolean> queue) {
-        this.elastic = elastic;
+    public WatchDog(Map<String, Integer> hazelcast, BlockingQueue<Boolean> queue) {
         this.hazelcast = hazelcast;
         this.queue = queue;
     }
 
     private boolean checkEquals() {
-        int el = elastic.get(Const.key);
+        int etalon = Const.version.get();
         int hz = hazelcast.get(Const.key);
-        boolean tmp = el == hz;
-        if (!tmp)
-            System.out.println(el + " != " + hz + " " + (el - hz));
-//        else
-//            System.out.println(el + " == " + hz + " " + (el - hz));
-        return tmp;
+        return etalon == hz;
     }
 
     @Override
     public void run() {
-        super.run();
-        while (true) {
-            boolean tmp = checkEquals();
-            int cnt = 0;
-            while (!tmp && (cnt++ < LOOP_MAX)) {
-                try {
-                    Thread.sleep(2);
-                } catch (InterruptedException ignored) {
+        try {
+            while (true) {
+                boolean tmp = checkEquals();
+                int cnt = 0;
+                while (!tmp && (cnt++ < LOOP_MAX)) {
+                    Thread.sleep(1);       // in most cases 1 ms is enough
+                    tmp = checkEquals();
                 }
-                tmp = checkEquals();
-            }
-            if (!tmp)
-                System.exit(100);
-            if (queue.peek() == null)
-                try {
+                if (!tmp) {
+                    Thread.sleep(5000);    // i think 5 sec is enough to update cache
+                    if (!checkEquals())
+                        System.exit(111);  // but, it's not
+                }
+                if (queue.peek() == null)
                     queue.put(true);
-                } catch (InterruptedException ignored) {
-                }
+
+            }
+        } catch (InterruptedException ignored) {
         }
     }
 }
