@@ -30,7 +30,7 @@ public class WatchDog extends Thread {
                 boolean tmp = checkEquals();
                 int cnt = 0;
                 while (!tmp && (cnt++ < LOOP_MAX)) {
-                    Thread.sleep(1);       // in most cases 1 ms is enough
+                    Thread.sleep(4);       // in most cases 1 ms is enough
                     tmp = checkEquals();
                 }
                 if (!tmp) {
