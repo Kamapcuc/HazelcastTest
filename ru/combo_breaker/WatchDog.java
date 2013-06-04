@@ -16,6 +16,10 @@ public class WatchDog extends Thread {
     private boolean checkEquals() {
         int etalon = Const.version.get();
         int hz = hazelcast.get(Const.key);
+//        if (etalon == hz)
+//            System.out.println(etalon + " == " + hz);
+//        else
+//            System.out.println(etalon + " != " + hz + " " + (etalon - hz));
         return etalon == hz;
     }
 
@@ -31,8 +35,8 @@ public class WatchDog extends Thread {
                 }
                 if (!tmp) {
                     Thread.sleep(5000);    // i think 5 sec is enough to update cache
-                    if (!checkEquals())
-                        System.exit(111);  // but, it's not
+                    if (!checkEquals())    // but, it's not
+                        System.exit(111);
                 }
                 if (queue.peek() == null)
                     queue.put(true);
