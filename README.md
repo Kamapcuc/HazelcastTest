@@ -1,5 +1,5 @@
 # test caption
 
 Numbered list:
-* line 1
-* line 2
+1 line 1
+1 line 2
