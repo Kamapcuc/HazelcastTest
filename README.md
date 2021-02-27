@@ -1,5 +1,2 @@
-# test caption
-
-Numbered list:
-1. line 1
-1. line 2
+This is for reproduce bug:
+https://github.com/hazelcast/hazelcast/issues/495
